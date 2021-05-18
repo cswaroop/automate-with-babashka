@@ -1,0 +1,56 @@
+#+TITLE:  Clojure Programming Cookbook
+#+AUTHOR:  Swaroop Chalasani
+#+EMAIL:  cswaroop@CSWAROOP-PC
+#+DATE:   2020 Jun 18
+#+TAGS:   
+Here is an attempt to write clojure in literate programming style using EMACS ORG mode and its babel package
+
+Repeated Shift-TAB will open and fold the document.
+
+1. Clojure is installed with JVM and clojure can be invoked with =cmd-clj= on windows
+
+
+Include NREPL server and middleware
+
+https://clojure.org/reference/deps_and_cli
+https://nrepl.org/nrepl/0.7.0/usage/server.html
+
+Untangle this by running =C-c, C-v t=.  It creates a =deps.edn= with the following content.
+
+#+BEGIN_SRC clojure  :tangle  deps.edn
+  {:paths ["src"]
+   :deps {nrepl  {:mvn/version  "0.7.0"} 
+          cider/cider-nrepl {:mvn/version "0.25.2"} 
+          ruiyun/tools.timer {:mvn/version "1.0.1"}
+          mvxcvi/puget {:mvn/version "0.9.1"}
+          adzerk/env  {:mvn/version "0.4.0"}
+          com.cemerick/pomegranate {:mvn/version "0.3.0"}
+          org.clojure/math.numeric-tower {:mvn/version "0.0.4"}}
+   :aliases {:nREPL
+             {:extra-deps
+              {nrepl/nrepl {:mvn/version "0.7.0"}}}}}
+#+END_SRC
+
+Start NREPL server
+
+https://nrepl.org/nrepl/0.7.0/usage/server.html
+
+Run this by =C-c, C-c= . open the buffer my-nrepl
+
+#+BEGIN_SRC emacs-lisp
+ (start-process "nrepl-process" "my-nrepl" "cmd-clj" "-R:nREPL -m nrepl.cmdline")
+  #+END_SRC
+  #+RESULTS:
+  : #<process nrepl-process>
+
+ Connect to NRepl  server from emacs
+
+Connect to repl server by running =M-x cider-connect-clj=. and execute the following
+
+#+BEGIN_SRC clojure :results output
+  (println  "Hello World")
+#+END_SRC
+
+
+
+

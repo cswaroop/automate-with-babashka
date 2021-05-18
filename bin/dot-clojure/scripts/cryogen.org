@@ -1,0 +1,8 @@
+* Cryogen
+- http://cryogenweb.org/docs/home.html
+- 
+#+BEGIN_SRC shell
+lein new cryogen blog
+cd blog
+lein ring server
+#+END_SRC

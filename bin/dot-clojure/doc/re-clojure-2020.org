@@ -1,0 +1,17 @@
+* re:Clojure 2020
+  - Day 1 :: https://www.youtube.com/watch?v=qRI1Ved0SfE&t=23844s
+  - Day 2 :: https://www.youtube.com/watch?v=NqWR_ysLkW8&t=14072s
+
+ SICP JavaScript Edition
+ https://source-academy.github.io/sicp/
+
+ ParantheC
+ https://legacy.cs.indiana.edu/classes/b521/newpc/ParentheC.pdf
+
+ 
+  Biff
+  Ketu | https://github.com/AppsFlyer/ketu
+
+  ParseHub | Web Scraping tool (ETL from WEB)
+
+  

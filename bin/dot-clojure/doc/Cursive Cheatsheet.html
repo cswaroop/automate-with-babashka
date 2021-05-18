@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cursive Cheat Sheet</title>
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 10mm;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    table tr td {
+      vertical-align: top;
+    }
+
+    table.layout tr td {
+      width: 33.33%;
+    }
+
+    body, h1, h2 {
+      font-family: sans-serif;
+    }
+
+    h1, h2 {
+      color: #235490;
+    }
+
+    h1 {
+      margin: 2pt 0 2pt 0;
+      font-size: 9pt;
+    }
+
+    h2 {
+      margin: 2pt 0 2pt 0;
+      font-size: 8pt;
+    }
+
+    table.section {
+      border-top: 1pt solid #20528e;
+      border-collapse: collapse;
+    }
+
+    table.section tr td {
+      font-size: 5.5pt;
+      border-bottom: 0.5pt solid #dedede;
+      vertical-align: middle;
+    }
+
+    table.section tr td:first-of-type {
+      width: 15%;
+      background-color: #e1e8f0;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+<h1 class="keymap">Cursive cheat-sheet (Default keymap)</h1>
+<table class="layout">
+  <tr>
+    <td>
+<h2 class="section">Structural Navigation</h2>
+<table class="section">
+<tr><td>Ctrl + Right</td><td>Move Forward</td></tr>
+<tr><td>Ctrl + Left</td><td>Move Backward</td></tr>
+
+
+
+
+</table>
+<h2 class="section">Structural Editing</h2>
+<table class="section">
+<tr><td>Ctrl + Alt + J</td><td>Slurp Backwards</td></tr>
+<tr><td>Alt + Shift + K</td><td>Slurp Forwards</td></tr>
+<tr><td>Ctrl + Alt + K</td><td>Barf Backwards</td></tr>
+<tr><td>Alt + Shift + J</td><td>Barf Forwards</td></tr>
+<tr><td>Alt + S</td><td>Splice Sexp</td></tr>
+
+
+<tr><td>Alt + R</td><td>Raise</td></tr>
+<tr><td>Alt + D</td><td>Kill</td></tr>
+<tr><td>Alt + Shift + D</td><td>Copy as Kill</td></tr>
+<tr><td>Ctrl + Alt + D</td><td>Kill Sexp</td></tr>
+<tr><td>Alt + Shift + S</td><td>Split</td></tr>
+<tr><td>Ctrl + Shift + S</td><td>Join</td></tr>
+<tr><td>Ctrl + Shift + 9</td><td>Wrap with ()</td></tr>
+<tr><td>Ctrl + [</td><td>Wrap with []</td></tr>
+<tr><td>Ctrl + Shift + [</td><td>Wrap with {}</td></tr>
+<tr><td>Ctrl + Shift + '</td><td>Wrap with &quot;&quot;</td></tr>
+<tr><td>Ctrl + Shift + 0</td><td>Close () and Newline</td></tr>
+<tr><td>Ctrl + ]</td><td>Close [] and Newline</td></tr>
+<tr><td>Ctrl + Shift + ]</td><td>Close {} and Newline</td></tr>
+
+<tr><td>Ctrl + Alt + ,</td><td>Thread Form</td></tr>
+<tr><td>Ctrl + Alt + .</td><td>Unthread Form</td></tr>
+<tr><td>Ctrl + Shift + Up</td><td>Move Form Up</td></tr>
+<tr><td>Ctrl + Shift + Down</td><td>Move Form Down</td></tr>
+
+</table>
+<h2 class="section">REPL</h2>
+<table class="section">
+<tr><td>Alt + Shift + L</td><td>Load File in REPL</td></tr>
+<tr><td>Alt + Shift + M</td><td>Sync Files in REPL</td></tr>
+<tr><td>Alt + Shift + P</td><td>Send Top Form to REPL</td></tr>
+
+<tr><td>Alt + Shift + R</td><td>Switch REPL NS to Current File</td></tr>
+
+<tr><td>Ctrl + \</td><td>Jump to REPL Editor</td></tr>
+
+
+
+<tr><td>Ctrl + Alt + E</td><td>Search REPL History</td></tr>
+<tr><td>Ctrl + Shift + \</td><td>View Macro Expansion</td></tr>
+</table>
+<h2 class="section">Usage Search</h2>
+<table class="section">
+<tr><td>Alt + F7 / Ctrl + F7</td><td>Find usages / Find Usages in file</td></tr>
+<tr><td>Ctrl + Shift + F7</td><td>Highlight usages of the symbol at caret in active editor</td></tr>
+<tr><td>Ctrl + Alt + F7</td><td>Show usages of the symbol at caret</td></tr>
+</table>
+<h2 class="section">General</h2>
+<table class="section">
+<tr><td>Ctrl + S</td><td>Save all files and settings</td></tr>
+<tr><td>Ctrl + Alt + Y</td><td>Detect all externally changed files and reload them from disk</td></tr>
+
+<tr><td>Ctrl + Shift + F12</td><td>Hide all tool windows</td></tr>
+<tr><td>Alt + Shift + F</td><td>Add selected node to favorites</td></tr>
+<tr><td>Alt + Shift + I</td><td>Inspect Code With _Editor Settings</td></tr>
+<tr><td>Ctrl + Backquote(`)</td><td>Change current code style scheme, color&amp;fonts scheme, keymap or Look&amp;Feel</td></tr>
+<tr><td>Ctrl + Alt + S</td><td>Edit application settings</td></tr>
+<tr><td>Ctrl + Alt + Shift + S</td><td>Configure project structure</td></tr>
+<tr><td>Ctrl + Shift + A</td><td>Quickly navigate to action by name</td></tr>
+
+
+
+
+</table>
+</td>
+<td>
+<h2 class="section">Editing</h2>
+<table class="section">
+<tr><td>Ctrl + Space</td><td>Basic code completion (the name of any class, method or variable)</td></tr>
+<tr><td>Ctrl + Shift + Enter</td><td>Complete statement</td></tr>
+<tr><td>Ctrl + P</td><td>Show parameters of the method call at caret</td></tr>
+<tr><td>Ctrl + Q</td><td>Show a popup window with documentation for the symbol at caret</td></tr>
+<tr><td>Shift + F1</td><td>Open browser with documentation for the selected item</td></tr>
+<tr><td>Ctrl + mouse over code</td><td>Brief Info</td></tr>
+<tr><td>Ctrl + F1</td><td>Show description of error or warning at caret</td></tr>
+<tr><td>Alt + Insert</td><td>Generate code... (Getters, Setters, Constructors, hashCode/equals, toString)</td></tr>
+<tr><td>Ctrl + O</td><td>Override base class methods in the current class</td></tr>
+<tr><td>Ctrl + I</td><td>Implement base interface/class methods in the current class</td></tr>
+<tr><td>Ctrl + Alt + T</td><td>Surround selected code fragment with if, while, try/catch or other construct</td></tr>
+<tr><td>Ctrl + /, Ctrl + Numpad/</td><td>Comment/uncomment current line or selected block with line comments</td></tr>
+<tr><td>Ctrl + Shift + /, Ctrl + Shift + Numpad/</td><td>Comment/uncomment code with block comments</td></tr>
+
+
+
+
+
+<tr><td>Ctrl + W</td><td>Select successively increasing code blocks</td></tr>
+<tr><td>Ctrl + Shift + W</td><td>Decrease current selection to previous state</td></tr>
+<tr><td>Alt + Q</td><td>Show intention actions and quick-fixes</td></tr>
+<tr><td>Alt + Enter</td><td>Show intention actions</td></tr>
+<tr><td>Ctrl + Alt + L</td><td>Reformat code</td></tr>
+<tr><td>Ctrl + Alt + I</td><td>Indent current line or selected block according to the code style settings</td></tr>
+<tr><td>Tab / Shift + Tab</td><td>Indent/Unindent selected lines</td></tr>
+<tr><td>Ctrl + X, Shift + Delete</td><td>Cut current line or selected block to clipboard</td></tr>
+<tr><td>Ctrl + C, Ctrl + Insert</td><td>Copy current line or selected block to clipboard</td></tr>
+<tr><td>Ctrl + V, Shift + Insert</td><td>Paste from clipboard</td></tr>
+
+
+
+
+<tr><td>Ctrl + Shift + V, Ctrl + Shift + Insert</td><td>Paste from recent buffers...</td></tr>
+<tr><td>Ctrl + D</td><td>Duplicate current line or selected block</td></tr>
+<tr><td>Ctrl + Y</td><td>Delete line at caret</td></tr>
+<tr><td>Ctrl + Shift + J</td><td>Smart line join</td></tr>
+<tr><td>Ctrl + Enter</td><td>Smart line split</td></tr>
+
+
+
+<tr><td>Shift + Enter</td><td>Start new line</td></tr>
+<tr><td>Ctrl + Shift + U</td><td>Toggle case for word at caret or selected block</td></tr>
+<tr><td>Ctrl + Shift + ] / Ctrl + Shift + [</td><td>Select till code block end/start</td></tr>
+<tr><td>Ctrl + Delete</td><td>Delete to word end</td></tr>
+<tr><td>Ctrl + Backspace</td><td>Delete to word start</td></tr>
+<tr><td>Ctrl + Numpad+, Ctrl + = / Ctrl + Numpad-, Ctrl + -</td><td>Expand/collapse code block</td></tr>
+<tr><td>Ctrl + Numpad+, Ctrl + =</td><td>Expand all</td></tr>
+<tr><td>Ctrl + Numpad-, Ctrl + -</td><td>Collapse all</td></tr>
+<tr><td>Ctrl + F4</td><td>Close currently focused content</td></tr>
+
+
+
+
+
+
+
+
+
+
+
+</table>
+<h2 class="section">Search/Replace</h2>
+<table class="section">
+<tr><td>Ctrl + F, Alt + F3</td><td>Find a string in active editor</td></tr>
+<tr><td>F3, Ctrl + L</td><td>Repeat the last Find/Replace operation, or moving to next occurrence of selected text</td></tr>
+<tr><td>Shift + F3, Ctrl + Shift + L</td><td>Repeat the last Find/Replace operation in reverse direction, or moving to previous occurrence of selected text</td></tr>
+<tr><td>Ctrl + R</td><td>Replace a string in active editor with another string</td></tr>
+<tr><td>Ctrl + Shift + F</td><td>Find a string in multiple files</td></tr>
+<tr><td>Ctrl + Shift + R</td><td>Replace a string in multiple files with another string</td></tr>
+
+
+
+
+
+
+
+
+
+
+</table>
+<h2 class="section">Refactoring</h2>
+<table class="section">
+<tr><td>Alt + Delete</td><td>Delete the selected class, method or field, checking for usages</td></tr>
+<tr><td>Shift + F6</td><td>Rename the selected symbol and correct all references</td></tr>
+<tr><td>Ctrl + Alt + N</td><td>Inline the selected method or variable</td></tr>
+<tr><td>Ctrl + Alt + V</td><td>Put a result of the selected expression into a variable</td></tr>
+</table>
+</td>
+<td>
+<h2 class="section">Navigation</h2>
+<table class="section">
+<tr><td>Ctrl + N</td><td>Quickly navigate to a class by name</td></tr>
+<tr><td>Ctrl + Shift + N</td><td>Quickly navigate to a file by name</td></tr>
+<tr><td>Ctrl + Alt + Shift + N</td><td>Quickly navigate to any symbol by name</td></tr>
+<tr><td>Alt + Shift + N</td><td>Quickly navigate to a namespace by name</td></tr>
+<tr><td>Alt + Right / Alt + Left</td><td>Go to next/previous editor tab</td></tr>
+<tr><td>F12</td><td>Activate last focused tool window</td></tr>
+<tr><td>Escape</td><td>Go to editor (from tool window)</td></tr>
+<tr><td>Shift + Escape</td><td>Hide active tool window</td></tr>
+<tr><td>Ctrl + Shift + F4</td><td>Close active tool window tab</td></tr>
+<tr><td>Ctrl + G</td><td>Navigate to a line (and/or column) in editor by its number</td></tr>
+<tr><td>Ctrl + E</td><td>Show list of recently viewed files</td></tr>
+<tr><td>Ctrl + Alt + Left / Ctrl + Alt + Right</td><td>Navigate back/forward</td></tr>
+
+<tr><td>Ctrl + Shift + Backspace</td><td>Move through the most recent change points</td></tr>
+<tr><td>Alt + F1</td><td>Select the current class or method in any view</td></tr>
+<tr><td>Ctrl + B</td><td>Navigate to the declaration of the symbol at caret or show its usages</td></tr>
+<tr><td>Ctrl + Alt + B</td><td>Navigate to the implementation(s) of the selected class or method</td></tr>
+<tr><td>Ctrl + Shift + I</td><td>Show a popup window with the symbol (and its implementations) content</td></tr>
+<tr><td>Ctrl + Shift + B</td><td>Navigate to the declaration of the symbol's type at caret</td></tr>
+<tr><td>Alt + Up / Alt + Down</td><td>Go to previous/next method</td></tr>
+<tr><td>Ctrl + [ / Ctrl + ]</td><td>Move to code block start/end</td></tr>
+<tr><td>Ctrl + F12</td><td>Popup structure of the current file for quick navigation</td></tr>
+<tr><td>F2 / Shift + F2</td><td>Next/previous highlighted error</td></tr>
+<tr><td>F4</td><td>Open editor for the selected item and give focus to it</td></tr>
+<tr><td>Alt + Home</td><td>Show navigation bar</td></tr>
+<tr><td>F11</td><td>Toggle bookmark at the current location</td></tr>
+<tr><td>Ctrl + F11</td><td>Toggle bookmark with mnemonic</td></tr>
+<tr><td>Shift + F11</td><td>Show list of all bookmarks</td></tr>
+
+
+
+
+
+</table>
+<h2 class="section">Run</h2>
+<table class="section">
+<tr><td>Alt + Shift + F10</td><td>Choose and run configuration</td></tr>
+<tr><td>Alt + Shift + F9</td><td>Choose and debug configuration</td></tr>
+<tr><td>Shift + F10</td><td>Run selected configuration</td></tr>
+<tr><td>Shift + F9</td><td>Debug selected configuration</td></tr>
+<tr><td>Ctrl + Shift + F10</td><td>Run context configuration</td></tr>
+</table>
+<h2 class="section">Debugging</h2>
+<table class="section">
+<tr><td>F8</td><td>Step to the next line in this file</td></tr>
+<tr><td>F7</td><td>Step to the next line executed</td></tr>
+<tr><td>Shift + F7</td><td>Step into the particular method</td></tr>
+<tr><td>Shift + F8</td><td>Step to the first line executed after returning from this method</td></tr>
+<tr><td>Alt + F9</td><td>Run to the line where the caret is</td></tr>
+<tr><td>Alt + F8</td><td>Evaluate arbitrary expression</td></tr>
+<tr><td>F9</td><td>Resume program execution</td></tr>
+<tr><td>Ctrl + F8</td><td>Toggle line breakpoint at caret</td></tr>
+<tr><td>Ctrl + Shift + F8</td><td>View and manage all breakpoints and watchpoints</td></tr>
+</table>
+<h2 class="section">VCS/Local History</h2>
+<table class="section">
+<tr><td>Ctrl + K</td><td>Commit project to VCS</td></tr>
+<tr><td>Ctrl + T</td><td>Update project from VCS</td></tr>
+<tr><td>Alt + Shift + C</td><td>View recent changes</td></tr>
+<tr><td>Alt + Backquote(`)</td><td>Context aware popup with list of commonly used VCS actions</td></tr>
+</table>
+<h2 class="section">Live Templates</h2>
+<table class="section">
+<tr><td>Ctrl + Alt + J</td><td>Surrounds the selection with one of the template</td></tr>
+<tr><td>Ctrl + J</td><td>Show popup list of live templates starting with the specified prefix</td></tr>
+</table>
+</td>
+  </tr>
+</table>
+</body>
+</html>

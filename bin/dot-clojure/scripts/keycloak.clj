@@ -1,0 +1,1 @@
+#!/usr/bin/env -S -v cmd-clj '-Sdeps "{:deps {nrepl {:mvn/version  """"""0.7.0""""""} cider/cider-nrepl {:mvn/version """"""0.25.2""""""} keycloak-clojure {:mvn/version """"""1.10.2""""""}}}" -m nrepl.cmdline --middleware [""""""cider.nrepl/cider-middleware""""""]'

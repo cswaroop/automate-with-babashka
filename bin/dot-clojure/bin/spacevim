@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export HOME=/d/MyProjects/nvim-spacevim
+export XDG_CONFIG_HOME=$HOME
+export XDG_DATA_HOME=$HOME/data
+export NVIM_LOG_FILE=$HOME
+nvim-qt $*

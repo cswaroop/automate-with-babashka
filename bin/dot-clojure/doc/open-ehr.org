@@ -1,0 +1,11 @@
+#+TITLE:  [[https://openehr.org/][Open EHR]]
+#+AUTHOR: 
+#+EMAIL:  cswaroop@CSWAROOP-PC
+#+DATE:   2020 Jun 26
+#+TAGS:   
+
+
+Links
+- https://github.com/openEHR/
+- https://openehr.org/downloads/platform/
+

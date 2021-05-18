@@ -1,0 +1,286 @@
+#+title: Production Clojure App
+#+author: Swaroop Chalasani
+
+Funding Circle
+https://www.youtube.com/watch?v=YFipjJMwVZ0&list=PL_arKaS8JOXHHaK715NZjVpfzKebcJD5U&index=1
+
+* Production App
+This is the production app template for Micro Service  at Funding Circle.
+** Project Setup
+The initial setup is fairly straight forward.
+
+#+begin_src shell :results output
+mkdir -p prod-app\resources
+mkdir -p prod-app\resources\schemas
+mkdir -p prod-app\src\prod_app
+mkdir -p prod-app\src\prod_app\specs
+mkdir -p prod-app\test\prod_app
+mkdir -p prod-app\test\resources
+mkdir -p prod-app\test\prod_app\integration
+mkdir -p prod-app\dev
+mkdir -p prod-app\bin
+mkdir -p prod-app\test\.circleci
+mkdir -p prod-app\test\.clj-kondo
+echo
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\resources
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\resources\schemas
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\src\prod_app
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\src\prod_app\specs
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\test\prod_app
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\test\resources
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\test\prod_app\integration
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\dev
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\bin
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\test\.circleci
+
+d:\MyProjects\personal\scripts>mkdir -p prod-app\test\.clj-kondo
+
+d:\MyProjects\personal\scripts>More? 
+#+end_example
+** Dependencies
+#+begin_src clojure :tangle prod-app/deps.edn :eval no :ns user
+  {:paths ["src" "resources"]
+   :deps {org.clojure/clojure {:mvn/version "1.10.1"}
+          ;; Core App
+          fundingcircle/jackdaw {:mvn/version "0.7.4"
+                                 :exclusions [org.apache.zookeeper/zookeeper
+                                              org.slf4j/slf4j-log4j12]}
+          integrant {:mvn/version "0.7.0"}
+          com.outpace/config {:mvn/version "0.13.2"}
+          ;; Support
+          danlentz/clj-uuid {:mvn/version "0.1.9"}
+          org.clojure/algo.generic {:mvn/version "0.1.3"}
+          org.clojure/data.json {}
+          org.clojure/data.zip {}
+          org.clojure/tools.logging {}
+          clj-http {}
+          }}
+#+end_src
+** Overview
+#+begin_src dot :file prod-app/topology.png :cmdline -Kdot -Tpng :exports results
+  digraph Topology {
+  bgcolor="white";
+  external_loan_application [shape=box];
+  external_loan_application -> update_sba_loan;
+  sba_loan_application_updated [shape=box];
+  update_sba_loan -> sba_loan_application_updated;
+  external_loan_submit_triggered [shape=box];
+  external_loan_submit_trigered -> send_loan_application_to_sba;
+  sba_results_available [shape=box];
+  send_loan_application_to_sba -> sba_results_available;
+  state_store [shape=cylinder];
+  state_store -> update_sba_loan;
+  update_sba_loan -> state_store;
+  state_store -> send_loan_application_to_sba;
+  }
+#+end_src
+
+#+RESULTS:
+[[file:prod-app/topology.png]]
+
+** Supporting Code
+*** Data Model
+#+BEGIN_SRC clojure :tangle prod-app/src/prod_app/specs/attributes.clj :results silent 
+  (ns prod-app.specs.attributes
+    "This namespace contains attributes specs."
+    (:require [clojure.string :as str]
+              [clojure.spec.alpha :as s]
+              [clojure.spec.gen.alpha :as gen]))
+
+  (s/def :loan-application/employee-count string?)
+  (s/def :loan-application/requested-amount string?)
+  (s/def :loan-application/sba-loan-number string?)
+
+  (def tax-id?
+    (s/with-gen #(re-matches #"[0-9]{10}" %)
+      #(gen/return (str/join (map str (take 10 (repeatedly (fn [] (rand-int 10)))))))))
+
+  (s/def :company/tax-id tax-id?)
+  (s/def :company/businss-name string?)
+  (s/def :company/city-name string?)
+  (s/def :company/country-code string?)
+  (s/def :company/state-code string?)
+  (s/def :company/street-name string?)
+  (s/def :company/zip-code string?)
+  (s/def :company/primary-phone string?)
+  (s/def :metadata/loan-application-id uuid?)
+  (s/def :external/opportunity-id string?)
+  (s/def :external/trigger-id uuid?)
+#+END_SRC
+
+Now we define our reader specs.  These are the specs we use to read from internal state store or message streams.  These specs are more stringent as these are used for validating our business logic.
+
+#+begin_src clojure :tangle prod-app/src/prod_app/specs/reader_specs.clj :results silent
+  (ns prod-app.specs.reader-specs
+    "Spec for reads from internal state and messaging streams.
+    Use this spec for validation AFTER READING FROM INTERAL STATE or reading messages from Kafka"
+    (:require [clojure.spec.alpha :as s]
+              [prod-app.specs.attributes]))
+
+  (s/def loan-application
+    (s/keys :req-un [:external/opportunity-id
+                     metadata/loan-application-id
+                     loan-application/employee-count
+                     loan-application/requested-amount
+                     :company/tax-id
+                     :company/businss-name
+                     :company/city-name
+                     :company/state-code
+                     :company/street-name
+                     :company/zip-code
+                     :company/primary-phone]
+            :opt-un [:loan-application/sba-loan-number
+                     :company/country-code]))
+
+  (s/def ::external-loan-application
+    (s/keys :req-un [:external/opportunity-id
+                     :external/trigger-id]))
+#+end_src
+
+#+begin_src clojure :tangle prod-app/dev/scratch.clj :exports both
+  (s/explain-data ::loan-application
+                  {:loan-application-id (java.util.UUID/randomUUID)
+                   :employee-count "2"
+                   :requested-amount "1000"
+                   :tax-id "1"
+                   :businss-name "foo"
+                   :city-name "bar"
+                   :state-code "AZ"
+                   :street-name "Abbey Road"
+                   :zip-code "999"
+                   :primary-phone "1-800-PHONE"})
+#+end_src
+
+#+begin_src clojure :tangle prod-app/dev/scratch.clj :results value :exports both
+  (s/valid? ::loan-application
+            {:loan-application-id (java.util.UUID/randomUUID)
+             :employee-count "2"
+             :requested-amount "1000"
+             :tax-id "1"
+             :businss-name "foo"
+             :city-name "bar"
+             :state-code "AZ"
+             :street-name "Abbey Road"
+             :zip-code "999"
+             :primary-phone "1-800-PHONE"})
+#+end_src
+
+  Writer specs are the specs we use to write to Kafka topics.
+  These specs are usually less stringent as they only require minimum data required
+  for us consider a valid topic. Compare ~::loan-application~ specs for reader and writer.
+  Our topology will produce to ~sba-loan-updated-event~ with the right value for 
+  ~:writer-specs.metadata/loan-application-is-complete~.
+
+#+begin_src clojure :tangle prod-app/src/prod_app/specs/writer_specs.clj :results silent
+  (ns prod-app-specs.writer-specs
+    "Spec for writes to internal state and message streams.
+    Use this spec for validation BEFORE WRITING TO INTERAL STATE or publishing messages to Kafka"
+    (:require [clojure.spec.alpha :as s]
+              [prod-app.specs.attributes]))
+
+  (s/def ::loan-application
+    (s/keys :req-un [:writer-specs.metadata/loan-application-id]
+            :opt-un [:writer-specs.loan-application/employee-count
+                     :writer-specs.loan-application/requested-amount
+                     :writer-specs.loan-application/sba-loan-number
+                     :writer-specs.company/tax-id
+                     :writer-specs.company/business-name
+                     :writer-specs.company/city-name]))
+#+end_src
+
+*** Logging and metrics
+We will define a logging namespace
+#+begin_src clojure :tangle prod-app/src/prod-app/log.clj :results silent
+  (ns prod-app.log
+    "Thin wrappers around cambium's logging fns."
+    (:require [cambium.codec :as codec
+               cambium.core :as cambium-core]))
+#+end_src    
+
+#+BEGIN_SRC xml :tangle prod-app/test/resources/logback-test.xml :eval no
+  <configuration>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    </appender>
+  </configuration>
+#+END_SRC
+*** Transducers
+Prototype of transducers for Kafka streams
+#+begin_src clojure :tangle prod-app/src/prod_app/xform.clj :results silent
+  (ns prod-app.xform
+    "Helper functions for working with transducers"
+    (:gen-class)
+    (:refer-clojure :exclude [transduce]))
+#+end_src
+#+
+** Topology
+#+begin_src clojure :tangle prod-app/src/prod_app/topology.clj :results silent
+  (ns prod-app.topology
+    (:gen-class)
+    (:require [clj-http.client :as http]
+              [clj-uuid :as uuid]))
+#+end_src
+** Testing the Topology
+#+begin_src shell :dir prod-app :results output :wrap EXPORT json
+tail -n 31 log\sba-connector-test.log
+#+end_src
+
+#+BEGIN_EXPORT json
+
+#+END_EXPORT
+** The rest of the structure
+** Integration Tests
+
+#+begin_src clojure :ns clojure.test :tangle prod-app/dev/scratch.clj :results output :exports both
+(run-tests 'prod-app.integration.topology-test)
+#+end_src
+
+* References
+- Kafka and REPL: Stream processing the functional way charles rees
+- Data-oriented-programming with clojure and jackdaw
+- April 2019 Seajure: Event sourced systems with Kafka, Clojure, and Jackdaw presented by Bryce Covert
+- Testing Event-Driven Systems
+
+
+#+begin_src shell :results verbatim org
+cat <<EOF
+| 1 | 2
+|--
+| a | b
+EOF
+echo
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+d:\MyProjects\personal\scripts>cat <<EOF
+
+d:\MyProjects\personal\scripts>| 1 | 2
+
+d:\MyProjects\personal\scripts>|--
+
+d:\MyProjects\personal\scripts>| a | b
+
+d:\MyProjects\personal\scripts>EOF
+
+d:\MyProjects\personal\scripts>More? 
+#+end_src
+

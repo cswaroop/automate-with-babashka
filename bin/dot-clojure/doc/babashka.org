@@ -1,0 +1,58 @@
+#+TITLE: Babashka
+#+DESCRIPTION: Babashka cookbook
+#+DATE: <2020-08-16 Sun>
+
+* Clojure practice on bare babashka.
+
+1. Literals tags :: * Clojure literal tags
+  #+BEGIN_SRC clojure
+    (read-string "#'foo")
+    ;; => (var foo)
+    (type #inst "2014-05-19T19:12:37.925-00:00")
+    ;; => java.util.Date
+    (read-string "#inst \"2014-05-19T19:12:37.925-00:00\"")
+    ;; => #inst "2014-05-19T19:12:37.925-00:00"
+    (java.util.UUID/randomUUID)
+    ;; => #uuid "7cf6b22d-fe22-4803-a485-91569570bce7"
+  #+END_SRC
+
+2. with-open
+  #+BEGIN_SRC clojure
+    ;; instead of writing like this
+    (let [f (clojure.java.io/writer "D:///new")]
+      (try
+        (.write f "some text")
+        (finally
+          (.close f))))
+
+    ;; Can be written as :
+    (with-open [f (clojure.java.io/writer "D://new")]
+      (.write f "some text"))
+  #+END_SRC
+
+  #+RESULTS:
+  : nilnil
+
+3. Reference Types
+  - Vars
+  - Atoms
+  - Refs
+
+
+
+
+
+
+
+
+
+
+* Import a CSV into Kafka, using Babashka
+https://blog.davemartin.me/posts/import-a-csv-into-kafka-using-babashka/
+
+* psql
+https://github.com/DarinDouglass/clj-psql
+* clojure.math.combinatorics
+#+BEGIN_SRC shell
+bb --classpath "$(deps -Spath -Sdeps '{:deps {org.clojure/math.combinatorics {:mvn/version "0.1.6"}}}')"  -e "(use 'clojure.math.combinatorics) (permutations [:a :b])"
+#+END_SRC

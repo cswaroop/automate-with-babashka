@@ -1,0 +1,86 @@
+#+title: Clojure Literate Programming
+
+References:
+https://org-babel.readthedocs.io/en/latest/header-args/
+https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-clojure.html
+
+#+BEGIN_SRC clojure :tangle deps.edn :eval no :dir simple-app
+{:deps
+{org.clojure/clojure {:mvn/version "1.10.0"}
+org.clojure/tools.deps.alpha
+{:git/url "https://github.com/clojure/tools.deps.alpha.git"
+  :sha "f6c080bd0049211021ea59e516d1785b08302515"}
+juxt/crux-core {:mvn/version "RELEASE"}}}
+#+END_SRC
+
+#+BEGIN_SRC shell
+FOR /F "tokens=* USEBACKQ" %%F IN (`cmd-clj -Spath`) DO (
+SET BABASHKA_CLASSPATH=%%F
+)
+ECHO %BABAHKA_CLASSPATH%
+
+#+END_SRC
+
+
+#+BEGIN_SRC shell
+FOR /F "tokens=* USEBACKQ" %%F IN (`cmd-clj -Sdeps`) DO (
+SET BABASHKA_CLASSPATH=%%F
+)
+ECHO %BABAHKA_CLASSPATH%
+
+#+END_SRC
+
+#+BEGIN_SRC shell :dir simple-app :results silent :session simple-app :eval query
+clojure -R:test -C:test -Sdeps '{:deps {nrepl {:mvn/version "0.7.0"} cider/cider-nrepl {:mvn/version "0.25.2"}}}'
+#+END_SRC
+
+#+BEGIN_SRC clojure :ns simple-app.core-test :tangle simple-app/test/simple_app/core_test.clj :results silent
+(require '[clojure.test  :refer [deftest testing is]])
+(deftest a-test
+  (testing "FIXME"
+    (is (= 0 1))))
+#+END_SRC
+
+#+BEGIN_SRC shell :dir simple-app :results pp :epilogue "true" :exports both
+clj-cmd -A:test
+#+END_SRC
+
+#+BEGIN_SRC clojure :ns clojure.test :tangle simple-app/dev/scratch.clj :results value  :exports both
+(run-tests 'simple-app.core-test)
+#+END_SRC
+
+#+BEGIN_SRC clojure :ns simple-app.core :tangle simple-app/src/simple_app/core.clj :results silent
+(defn hello [subject]
+  (prn (str "Hello" subject)))
+#+END_SRC
+
+#+begin_src clojure :ns simple-app :tangle simple-app/dev/scratch.clj :results output :exports both
+(hello "world")
+#+end_src
+
+#+begin_src clojure :ns simple-app :tangle simple-app/dev/scratch.clj :results output :exports both
+(str "foo") (+ 1) (prn "baz")
+#+end_src
+
+If the evaluation returns something that looks like list we can use
+~:results value list~
+
+#+begin_src clojure :tangle simple-app/dev/scratch.clj :results value list :exports both
+["foo" "bar" "baz"]
+#+end_src
+
+#+begin_src clojure :tangel simple-app/dev/scratch.clj :exports both
+[["foo" "bar" "baz" "quick"]
+  ["1" "2" "3" "4"]
+  [1 2 3 4]
+  '(:one :two :threee :four)
+  (take 4 (range))]
+#+end_src
+
+I couldn't find a super clean way to print maps nicely. Fortunately clojure pproint ahs us covered.
+
+#+BEGIN_SRC clojure :tangle simple-app/dev/scratch.clj :results output :exports both
+(clojure.pprint/print-table [{:a 1, :b 2, :c 3} {:b :two, :a :one, :c :three}])
+#+END_SRC
+
+

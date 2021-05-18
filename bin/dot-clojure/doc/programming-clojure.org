@@ -1,0 +1,35 @@
+#+TITLE:  Programming Clojure
+#+AUTHOR: Stuart Halloway, Aaron Bedra
+#+EMAIL:  cswaroop@gmail.com
+#+DATE:   2020 Jun 21
+#+TAGS:   
+https://github.com/cswaroop/clojure-books/blob/master/Programming.Clojure.2nd.edition.pdf
+
+* Getting Started
+- Functions are first-class objects
+- Data is immutable
+- Functions are pure
+#+BEGIN_SRC  clojure
+      ;; List comprehension
+       (for [c compositions 
+             :when (= "Requiem" (:name c))]
+         ())
+  ;; STM Ref
+    (def accounts (ref #{}))
+    (defrecord Account [id balance])
+    (dosync  (alter accounts conj (->Account “CLJ” 1000.00)
+  (/ 1 0)
+
+  (pst)
+
+#+END_SRC
+* Exploring Clojure
+* Sequences
+* Functional Programming
+* State
+* Protocols and Datatypes
+* Macros
+* Multimethods
+* JVM Interoparability
+* Building an Application
+* 

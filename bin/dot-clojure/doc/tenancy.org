@@ -1,0 +1,31 @@
+#+TITLE: Tenancy
+#+DESCRIPTION: A Saas Boilerplate in clojure.
+
+* Introduction
+- [[https://github.com/laravel/laravel][Laravel]] [[https://laravel.com/docs/][Docs]]
+- [[https://github.com/stancl/tenancy][Saas Boilerplate]] [[https://tenancyforlaravel.com/saas-boilerplate/][Docs]]
+* Project Setup
+#+BEGIN_SRC shell
+mkdir -p .github
+mkdir -p art
+mkdir -p assets
+mkdir -p src
+mkdir -p src\bootstrappers
+mkdir -p src\commands
+mkdir -p src\concerns
+mkdir -p src\contracts
+mkdir -p src\controllers
+mkdir -p src\database
+mkdir -p src\events
+mkdir -p src\exceptions
+mkdir -p src\facades
+mkdir -p src\features
+mkdir -p src\jobs
+mkdir -p src\listeners
+mkdir -p src\middleware
+mkdir -p src\resolvers
+mkdir -p src\tenant_database_managers
+mkdir -p tests
+#+END_SRC
+
+

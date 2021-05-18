@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "https://github.com/mogenslund/liquid/blob/master/resources/help/cheatsheet.txt"
+ clojure -Sdeps '{:deps {mogenslund/liquid {:mvn/version "RELEASE"}}}' -m liq.core

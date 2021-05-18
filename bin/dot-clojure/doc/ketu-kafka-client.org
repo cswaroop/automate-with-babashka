@@ -1,0 +1,10 @@
+* KETU - Core.Async APIed Kafka Client from AppsFlyer
+
+opts {:brokers "host:9-92"
+      :topic "names"
+      :shape :value
+      :value-type :string}
+ch (chan 100)
+source (source ch opts)
+(<! ch)
+

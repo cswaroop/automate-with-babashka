@@ -1,0 +1,44 @@
+Data oriented programming is language agnostic.  It can be done in C#, JavaScript, Clojure etc.
+
+But in gaming world data oriented programming means Entity Component and Systems which is different.
+
+* Principles
+** Seperate Code from Data.
+   Nouns and Verbs seperation. OOP vs. DOP mixing those is different.
+** Represent data entities with generic structures
+** Data is IMMUTABLE
+** Functions are PURE
+** Manipulate the whole system with generic functions
+
+** References
+   - [[https://www.manning.com/books/data-oriented-programming?utm_source=viebel&utm_medium=affiliate&utm_campaign=book_sharvit2_data_1_29_21&a_aid=viebel&a_bid=d5b546b7][Data Oriented Programming]]
+   - The Joy of Programming (data oriented programming chapter)
+   - [[https://www.youtube.com/watch?v=vK1DazRK_a0&t=2591s][Solving Problems clojure way]]
+   - [[https://www.youtube.com/watch?v=n-avEZHEHg8][Data diffing way of software architectures]]
+   - [[https://www.youtube.com/watch?v=j382BLptxCc&t=1185s][Designing Data-Driven DSLs]]
+   - [[https://www.youtube.com/watch?v=zznwKCifC1A][Transperency through Data]]
+
+* Data Driven Programming?
+  - Data first, program is data flow
+  - Plain data (structs to someextent, but not Objects)
+  - Data defines the control flow!
+    - using Data, configuration driven development
+      - e.g. aws-sdk-js
+    - Making DSLs with data
+      - e.g. Hiccup(HTML), Garden(CSS), Rum, Onyx, Reitit, Ataraxy
+    - Code generation is possible!
+Macros are no longer the first reach to build DSLs (deprecated Storm by Onyx, Compojure by Reitit/Ataraxy)
+
+* Keyword driven development is a form of data oriented programming
+  -:namespace/keyword
+  - keyword can be inherited
+  - Multimethods can act in polymorphic way
+  - e.g. Integrant
+* clojure.spec is for validating grammers built with clojure datastructures.  For data schemas definition and validation use Malli.
+
+
+* Data Driven API
+  eqivalent of Fluent APIs in OOP
+  -e.g. Honey SQL(SQL)
+  - Regal (RegEx)
+* Data diffing way of software architectures

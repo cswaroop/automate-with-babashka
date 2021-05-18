@@ -1,0 +1,80 @@
+#+title: Deps.clj
+
+
+* Project Setup
+~deps.clj~ is drop-in replacement for clojure.  
+Clojure is a bash/powershell wrapper and deps.clj replaces
+it the shell script part with clojure itself.
+
+Install deps.clj on windows
+
+#+begin_src shell
+scoop install deps.clj
+#+end_src
+
+#+begin_src shell :results output
+mkdir depsclj-proj\src\deps
+echo
+#+end_src
+
+#+RESULTS:
+: Microsoft Windows [Version 6.1.7601]
+: Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+: 
+: d:\MyProjects\personal\scripts>mkdir depsclj-proj\src\deps
+: 
+: d:\MyProjects\personal\scripts>More? 
+
+#+begin_src clojure :tangle depsclj-proj\deps.edn
+{:path ["src"]
+  :deps {org.clojure/clojure {:mvn/version "1.10.1"}
+                ring/ring-core {:mvn/version "1.8.1"}
+                ring/ring-jetty-adapter {:mvn/version "1.8.1"}}
+  :aliases {:run {:main-opts ["-m" "deps.core"]}}}
+#+end_src 
+
+* Application                                                          :easy:
+#+begin_src clojure :tangle depsclj-proj\src\deps\core.clj
+(ns deps.core
+  (:require [ring.adapter.jetty :refer [run-jetty]]))
+(defn -main []
+  (println "Hello World"))
+#+end_src
+
+* Run
+#+begin_src shell :results output 
+cmd-clj -A:run
+echo
+#+end_src
+
+#+RESULTS:
+: Microsoft Windows [Version 6.1.7601]
+: Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+: 
+: d:\MyProjects\personal\scripts>cmd-clj -A:run
+: Clojure 1.10.1
+: user=> user=> 
+: 
+: d:\MyProjects\personal\scripts>
+
+
+* TODO    df                                                           :easy:
+:PROPERTIES:
+:Effort:   10
+:END:
+:LOGBOOK:
+CLOCK: [2020-07-16 Thu 00:39]--[2020-07-16 Thu 00:40] =>  0:01
+:END:
+
+**  
+
+** TODO 
+
+<2020-07-16 Thu>
+
+
+<2020-07-16 Thu 00:35>
+<2020-07-17 Fri 01:40>
+
+
+#+include: 

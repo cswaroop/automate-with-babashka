@@ -1,0 +1,9 @@
+#!/bin/sh
+echo "https://liquidz.github.io/vim-iced/#installation"
+export ICED_REPL_CLOJURE_CLI_CMD=clojure iced repl   
+export HOME=/d/MyProjects/nvim-iced
+export PATH=$PATH:$HOME/nvim/plugged/vim-iced/bin
+export XDG_CONFIG_HOME=$HOME
+export XDG_DATA_HOME=$HOME/data
+export NVIM_LOG_FILE=$HOME
+nvim-qt $*

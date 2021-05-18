@@ -1,0 +1,237 @@
+#+TITLE:  Clojure Programming 
+#+AUTHOR:  Chas Emerick, Brian Carper, and CHristophe Grand
+#+EMAIL:  cswaroop@CSWAROOP-PC
+#+DATE:   2020 Jun 18
+#+TAGS:   
+Here is an attempt to write clojure in literate programming style using 
+EMACS ORG mode and its babel package
+
+Repeated Shift-TAB will open and fold the document.
+Press =C-c C-v h o= to export this file as html to view
+
+* Setup
+1. Clojure is installed with JVM and clojure can be invoked with =cmd-clj= on windows
+Include NREPL server and middleware
+
+
+https://clojure.org/reference/deps_and_cli
+https://nrepl.org/nrepl/0.7.0/usage/server.html
+
+Untangle this by running =C-c, C-v t=.  It creates a =deps.edn= with the following content.
+Edit can be done   =C-c C-'=
+Evaluation can be done in edit mode =C-c M-;=
+
+#+BEGIN_SRC clojure  :tangle  deps.edn
+  {:paths ["src"]
+   :deps {nrepl  {:mvn/version  "0.7.0"} 
+          cider/cider-nrepl {:mvn/version "0.25.2"} 
+          ruiyun/tools.timer {:mvn/version "1.0.1"}
+          mvxcvi/puget {:mvn/version "0.9.1"}
+          adzerk/env  {:mvn/version "0.4.0"}
+          com.cemerick/pomegranate {:mvn/version "0.3.0"}
+          org.clojure/math.numeric-tower {:mvn/version "0.0.4"}}
+   :aliases {:nREPL
+             {:extra-deps
+              {nrepl/nrepl {:mvn/version "0.7.0"}}}}}
+#+END_SRC
+
+Start NREPL server
+
+https://nrepl.org/nrepl/0.7.0/usage/server.html
+
+Run this by =C-c C-c= . open the buffer my-nrepl
+
+#+BEGIN_SRC emacs-lisp
+ (start-process "nrepl-process" "my-nrepl" "cmd-clj" "-R:nREPL -m nrepl.cmdline")
+  #+END_SRC
+  #+RESULTS:
+  : #<process nrepl-process>
+
+ Connect to NRepl  server from emacs
+
+Connect to repl server by running =M-x cider-connect-clj=. and execute the following
+
+#+BEGIN_SRC clojure :results output
+  (println  "Hello World")
+#+END_SRC
+
+#+RESULTS:
+
+* Down the Rabbit Hole
+
+ All of Clojure’s sequential collections implement the =java.util.List interface=, so you can use that interface’s .get method to access their contents.
+Java defines a couple of key interfaces— =java.lang.Runnable= and  =java.util.concurrent.Callable= —which are implemented by Clojure functions that take no parameters.
+
+**  read-string, eval, quote,
+#+BEGIN_SRC  clojure
+      (read-string "42")
+      ;; => 42
+    (eval  (read-string "(+ 1 2)") )
+  ;; => 3
+
+  ;; quote
+  ’(+ 1 2)
+  'x
+  (symbol? (quote x))
+  ;; => true
+
+
+  ;; pr
+  (pr [1 2 3])
+  ;; => nil
+
+  ;; pr-str
+  (pr-str [1 2 3])
+  ;; => "[1 2 3]"
+
+#+END_SRC
+
+** nil, Strings, Booleans, Characters, keywords, Symbols, Numbers, RegExps, Comments, Commas, Namespaces
+** Collection Literals
+** Function Literals
+** Code Blocks - do, let, loop/recur
+#+BEGIN_SRC clojure
+  (do
+    (println "hi")
+    (apply * [4 5 6]))
+  ;; => 120
+
+  (let [a (inc (rand-int 6))
+        b (inc (rand-int 6))]
+    (println (format "You rolled a %s and a %s" a b))
+    (+ a b))
+  ;; => 7
+
+  (let [a (inc (rand-int 6))
+        b (inc (rand-int 6))]
+    (do
+      (println (format "You rolled a %s and a %s" a b))
+      (+ a b)))
+  ;; => 8
+
+  ;; vars
+  (def p "foo")
+  ;; => #'user/p
+  'p
+  ;; => p
+#+END_SRC
+
+*  Functional Programming
+- map, reduce
+- apply, comp, partial
+- filter, 
+- group-by, count
+#+BEGIN_SRC clojure
+  
+#+END_SRC
+
+* Collections
+* Concurrency
+* Macros
+* Datatypes and Protocos
+* Multimethods
+
+#+BEGIN_SRC  clojure
+  (defmulti fill
+    "Fill a xml node (as per clojure.xml) with the provided value"
+    (fn [node value ]
+      (:tag node)))
+
+  (defmethod fill :div
+    [node value]
+    (assoc node :content [(str value)]))
+
+  (defmethod fill :input
+    [node value]
+    (assoc-in node [:attrs :value] (str value)))
+
+  (defmethod fill :default
+    [node value]
+    (assoc node :content [(str value)]))
+
+  (fill {:tag :div} "hello")
+  ;; => {:tag :div, :content ["hello"]}
+
+  (fill {:tag :input} "hello")
+  ;; => {:tag :input, :attrs {:value "hello"}}
+  (fill {:span :input} "hello")           ;default
+  ;; => {:span :input, :content ["hello"]}
+
+
+ #+END_SRC
+
+#+RESULTS:
+: nil#object[clojure.lang.MultiFn 0x12f705b4 "clojure.lang.MultiFn@12f705b4"]#object[clojure.lang.MultiFn 0x12f705b4 "clojure.lang.MultiFn@12f705b4"]#object[clojure.lang.MultiFn 0x12f705b4 "clojure.lang.MultiFn@12f705b4"]{:tag :div, :content ["hello"]}{:tag :input, :attrs {:value "hello"}}{:span :input, :content ["hello"]}
+* Choosing Clojure Type definitions
+- maps
+- deftype, defrecord
+- reify, proxy and genclass (JVM Interoparability)
+
+* Design Patterns
+* Database programming
+- Relational
+- Non-Relational (NoSQL)
+** Relational
+- jdbc.next
+- honeysql
+** Non-Relational
+- Datomic family (Datahike, DataScript)
+- [[https://github.com/juji-io/datalevin][datalevin]]
+* Web Programming
+* Testing
+* Deployment
+- Docker
+- Heroku
+- AWS
+- Azure
+- 
+* [[https://www.youtube.com/watch?v=YFipjJMwVZ0&list=PL_arKaS8JOXHHaK715NZjVpfzKebcJD5U][Clojure/North 2020]]
+
+- http://github.com/sfertman
+- http://github.com/camsaul/methodical
+
+** [[https://github.com/holdybot/holdybot][ParkingApp]]  
+** [[http://github.com/nomnom-insights/nomnom.duckula][Duckula]]
+
+ - http://github.com/nomnom-insights/nomnom.bunnicula
+ - https://avro.apache.org/docs/current/
+
+ Convention over Configuration
+
+ Twitch Twi
+rp framework
+
+
+ #+BEGIN_SRC clojure
+
+
+ #+END_SRC
+ 
+** [[https://magicseaweed.com][Surfing]]
+
+ [[https://www.youtube.com/watch?v=tweX17BCgG8&list=PL_arKaS8JOXHHaK715NZjVpfzKebcJD5U&index=14][Talk]]
+
+ An Electron like Desktop PWA
+ - https://openfin.co/
+ - https://www.finos.org/
+ - https://finos.github.io/
+ - https://github.com/symphonyoss/SymphonyElectron
+
+
+** Literate Stream processing
+emacs + org mode + babel + clojure
+
+#+BEGIN_SRC shell :results silent
+mkdir -p simple-app/src/simple_app
+mkdir -p simple-app/test/simple_app
+mkdir -p simple-app/dev
+echo
+#+END_SRC 
+
+#+RESULTS:
+| Microsoft                            | Windows | [Version                   | 6.1.7601] |              |     |        |           |
+| Copyright                            | (c)     | 2009                       | Microsoft | Corporation. | All | rights | reserved. |
+| d:\MyProjects\personal\scripts>mkdir | -p      | simple-app/src/simple_app  |           |              |     |        |           |
+| d:\MyProjects\personal\scripts>mkdir | -p      | simple-app/test/simple_app |           |              |     |        |           |
+| d:\MyProjects\personal\scripts>mkdir | -p      | simple-app/dev             |           |              |     |        |           |
+| d:\MyProjects\personal\scripts>More? |         |                            |           |              |     |        |           |

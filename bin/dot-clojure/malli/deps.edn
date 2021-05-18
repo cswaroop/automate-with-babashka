@@ -1,0 +1,4 @@
+{:paths ["src"]
+ :deps {org.clojure/clojure {:mvn/version "1.10.1"}
+        metosin/malli {:git/url "https://github.com/metosin/malli"
+                       :sha "4c854a283697fbc22856145e514be7c2b1853edf"}}}

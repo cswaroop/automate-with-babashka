@@ -1,0 +1,5 @@
+#+TITLE: Clojure Workshop
+#+DESCRIPTION: Source code samples from book Clojure workshop
+#+TITLE: <2020-08-16 Sun>
+
+
