@@ -1,1 +1,29 @@
-* Automate the boring stuff with Babashka
+#+TITLE: Automate the boring stuff with Babashka
+* Clojure Programming Basics
+** Babashka Basics
+Programs, Scripts, Pods, and Libs
+** Data Structures
+int, double
+Vectors, Lists, Sets and Maps(Dictionaries)
+Strings, RegExp
+** Flow Control
+if(When), While
+Map, Reduce
+doseq, dotimes
+For
+** Functions
+
+
+* Automating Tasks
+** Pattern Matching with RegExp
+** Input Validation
+** Organizing Files
+** Web Scraping
+** Working with Excel
+** Working with Google Sheets
+** Working with PDF and Word Documents
+** Working with CSV and JSON
+** Keeping time, Scheduling Tasks, and Launching programs
+** Sending Email and Text Messages
+** Manipulating Images
+** GUI Automation
